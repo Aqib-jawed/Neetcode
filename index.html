@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeetCode 150 – Pattern Cheat Sheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0D1117;
+    --surface: #161B22;
+    --surface2: #1C2128;
+    --border: #30363D;
+    --text: #E6EDF3;
+    --muted: #8B949E;
+    --accent: #58A6FF;
+    --green: #3FB950;
+    --yellow: #D29922;
+    --red: #F85149;
+    --orange: #F0883E;
+    --purple: #BC8CFF;
+    --pink: #FF7B72;
+    --teal: #39D353;
+
+    --c-tp: #FF6B6B;
+    --c-sw: #FF9F43;
+    --c-ps: #F9CA24;
+    --c-ka: #48DBFB;
+    --c-bs: #54A0FF;
+    --c-gr: #A29BFE;
+    --c-str: #1DD1A1;
+    --c-ll: #74B9FF;
+    --c-st: #FD9644;
+    --c-bfs: #55EFC4;
+    --c-dfs: #00B894;
+    --c-bst: #0984E3;
+    --c-gbfs: #6C5CE7;
+    --c-topo: #D63031;
+    --c-uf: #E84393;
+    --c-bt: #E17055;
+    --c-dp1: #00CEC9;
+    --c-dp2: #2ECC71;
+    --c-dpm: #9B59B6;
+    --c-heap: #F39C12;
+    --c-int: #16A085;
+    --c-math: #7F8C8D;
+    --c-trie: #27AE60;
+    --c-dc: #C0392B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  nav .logo { font-weight: 900; font-size: 1.1rem; color: var(--accent); letter-spacing: -0.5px; white-space: nowrap; }
+  nav .search-box {
+    flex: 1; min-width: 200px; max-width: 340px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 14px;
+    color: var(--text); font-size: 0.875rem; font-family: inherit;
+    outline: none;
+  }
+  nav .search-box:focus { border-color: var(--accent); }
+  nav .filter-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 4px 12px; border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    font-size: 0.75rem; cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  .filter-btn.easy.active { background: var(--green); border-color: var(--green); }
+  .filter-btn.medium.active { background: var(--yellow); border-color: var(--yellow); }
+  .filter-btn.hard.active { background: var(--red); border-color: var(--red); }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center; padding: 48px 24px 32px;
+    background: linear-gradient(180deg, #0D1117 0%, #161B22 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 900; letter-spacing: -1px; }
+  .hero h1 span { color: var(--accent); }
+  .hero p { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
+  .stats { display: flex; justify-content: center; gap: 32px; margin-top: 24px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat .num { font-size: 2rem; font-weight: 900; font-family: 'JetBrains Mono'; }
+  .stat .lbl { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── MAIN LAYOUT ── */
+  main { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+  /* ── SECTION ── */
+  .pattern-section { margin-bottom: 40px; }
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px; padding: 14px 20px;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid var(--border); border-bottom: none;
+  }
+  .section-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+  .section-title { font-weight: 800; font-size: 1.05rem; }
+  .section-count { background: rgba(255,255,255,0.1); padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; color: var(--muted); }
+  .keyword-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+  .kpill {
+    padding: 2px 10px; border-radius: 20px; font-size: 0.7rem;
+    border: 1px solid; opacity: 0.85; cursor: default;
+  }
+
+  /* ── TWO-COL LAYOUT ── */
+  .section-body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border: 1px solid var(--border); border-radius: 0 0 12px 12px; overflow: hidden;
+  }
+  @media (max-width: 900px) { .section-body { grid-template-columns: 1fr; } }
+
+  /* ── QUESTION TABLE ── */
+  .qs-panel { background: var(--surface); overflow-x: auto; }
+  .qs-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .qs-table th {
+    background: var(--surface2); padding: 8px 12px;
+    text-align: left; color: var(--muted); font-weight: 600;
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .qs-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .qs-table tr:last-child td { border-bottom: none; }
+  .qs-table tr:hover td { background: rgba(255,255,255,0.03); }
+  .lc-num { font-family: 'JetBrains Mono'; font-weight: 700; color: var(--accent); font-size: 0.8rem; }
+  .q-name a { color: var(--text); text-decoration: none; }
+  .q-name a:hover { color: var(--accent); text-decoration: underline; }
+  .diff { font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+  .diff.Easy { background: rgba(63,185,80,0.15); color: #3FB950; }
+  .diff.Medium { background: rgba(210,153,34,0.15); color: #D29922; }
+  .diff.Hard { background: rgba(248,81,73,0.15); color: #F85149; }
+
+  /* ── CHEAT PANEL ── */
+  .cheat-panel {
+    background: var(--surface2);
+    border-left: 1px solid var(--border);
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 16px;
+    font-size: 0.82rem;
+  }
+
+  .cheat-block-title {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px;
+  }
+
+  /* Visual */
+  .visual-box {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px; overflow-x: auto;
+  }
+  .visual-box pre {
+    font-family: 'JetBrains Mono'; font-size: 0.75rem;
+    color: #a8d8ea; white-space: pre; line-height: 1.7;
+  }
+
+  /* Template */
+  .code-block {
+    background: #010409; border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+  .code-header {
+    background: var(--surface2); padding: 6px 14px;
+    font-size: 0.7rem; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .code-body {
+    padding: 14px; font-family: 'JetBrains Mono'; font-size: 0.72rem;
+    color: #c9d1d9; overflow-x: auto; white-space: pre; line-height: 1.8;
+  }
+
+  .kw { color: #FF7B72; }  /* keywords */
+  .fn { color: #D2A8FF; }  /* function names */
+  .cm { color: #6E7681; }  /* comments */
+  .st { color: #A5D6FF; }  /* strings/vars */
+  .nu { color: #79C0FF; }  /* numbers */
+  .tp { color: #FFA657; }  /* types */
+
+  /* Recognize box */
+  .recognize-box {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px;
+  }
+  .recognize-box ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .recognize-box li::before { content: "⚡ "; }
+  .recognize-box li { font-size: 0.78rem; color: var(--muted); }
+  .recognize-box li strong { color: var(--text); }
+
+  /* Complexity badges */
+  .complexity { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cbadge {
+    font-family: 'JetBrains Mono'; font-size: 0.72rem;
+    padding: 3px 10px; border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+  .cbadge.time { background: rgba(88,166,255,0.1); color: var(--accent); border-color: rgba(88,166,255,0.3); }
+  .cbadge.space { background: rgba(63,185,80,0.1); color: var(--green); border-color: rgba(63,185,80,0.3); }
+
+  /* Progress */
+  .progress-bar { height: 4px; background: var(--border); border-radius: 4px; margin-top: 4px; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+
+  /* Hidden questions for filtering */
+  .q-row.hidden { display: none; }
+  .pattern-section.hidden { display: none; }
+
+  /* Top TOC */
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; padding: 20px 0 8px; }
+  .toc-link {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 20px;
+    background: var(--surface); border: 1px solid var(--border);
+    text-decoration: none; color: var(--text);
+    font-size: 0.78rem; transition: all 0.2s;
+  }
+  .toc-link:hover { border-color: var(--accent); color: var(--accent); }
+  .toc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Tips box */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 32px; }
+  .tip-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .tip-card h3 { font-size: 0.85rem; margin-bottom: 8px; color: var(--accent); }
+  .tip-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">LC 150 ⚡ Pattern Sheet</div>
+  <input class="search-box" type="text" id="searchInput" placeholder="🔍  Search problem name or pattern..." oninput="filterAll()">
+  <div class="filter-btns">
+    <button class="filter-btn active" onclick="filterDiff('All', this)">All</button>
+    <button class="filter-btn easy" onclick="filterDiff('Easy', this)">Easy</button>
+    <button class="filter-btn medium" onclick="filterDiff('Medium', this)">Medium</button>
+    <button class="filter-btn hard" onclick="filterDiff('Hard', this)">Hard</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>LeetCode 150 — <span>Pattern Cheat Sheet</span></h1>
+  <p>Every problem categorized • Java templates • Visual diagrams • Recognition keywords</p>
+  <div class="stats">
+    <div class="stat"><div class="num" style="color:#3FB950">45</div><div class="lbl">Easy</div></div>
+    <div class="stat"><div class="num" style="color:#D29922">90</div><div class="lbl">Medium</div></div>
+    <div class="stat"><div class="num" style="color:#F85149">22</div><div class="lbl">Hard</div></div>
+    <div class="stat"><div class="num" style="color:var(--accent)">24</div><div class="lbl">Patterns</div></div>
+    <div class="stat"><div class="num" style="color:var(--purple)">157</div><div class="lbl">Problems</div></div>
+  </div>
+</div>
+
+<main>
+
+<div class="toc" id="toc"></div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     TWO POINTERS
+══════════════════════════════════════════════════════════════════ -->
+<div class="pattern-section" id="sec-tp" data-pattern="Array – Two Pointers">
+  <div class="section-header" style="background:rgba(255,107,107,0.08); border-color:rgba(255,107,107,0.3);">
+    <div class="section-dot" style="background:#FF6B6B;"></div>
+    <span class="section-title">Two Pointers</span>
+    <span class="section-count">8 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#FF6B6B;border-color:#FF6B6B40;">sorted array</span>
+      <span class="kpill" style="color:#FF6B6B;border-color:#FF6B6B40;">pair sum</span>
+      <span class="kpill" style="color:#FF6B6B;border-color:#FF6B6B40;">remove in-place</span>
+      <span class="kpill" style="color:#FF6B6B;border-color:#FF6B6B40;">palindrome</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel">
+      <table class="qs-table">
+        <thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead>
+        <tbody>
+          <tr class="q-row" data-diff="Easy" data-pattern="Array – Two Pointers"><td class="lc-num">125</td><td class="q-name"><a href="https://leetcode.com/problems/valid-palindrome/" target="_blank">Valid Palindrome</a></td><td><span class="diff Easy">Easy</span></td></tr>
+          <tr class="q-row" data-diff="Medium" data-pattern="Array – Two Pointers"><td class="lc-num">167</td><td class="q-name"><a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank">Two Sum II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+          <tr class="q-row" data-diff="Medium" data-pattern="Array – Two Pointers"><td class="lc-num">15</td><td class="q-name"><a href="https://leetcode.com/problems/3sum/" target="_blank">3Sum</a></td><td><span class="diff Medium">Medium</span></td></tr>
+          <tr class="q-row" data-diff="Medium" data-pattern="Array – Two Pointers"><td class="lc-num">11</td><td class="q-name"><a href="https://leetcode.com/problems/container-with-most-water/" target="_blank">Container With Most Water</a></td><td><span class="diff Medium">Medium</span></td></tr>
+          <tr class="q-row" data-diff="Hard" data-pattern="Array – Two Pointers"><td class="lc-num">42</td><td class="q-name"><a href="https://leetcode.com/problems/trapping-rain-water/" target="_blank">Trapping Rain Water</a></td><td><span class="diff Hard">Hard</span></td></tr>
+          <tr class="q-row" data-diff="Easy" data-pattern="Array – Two Pointers"><td class="lc-num">26</td><td class="q-name"><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array/" target="_blank">Remove Duplicates from Sorted Array</a></td><td><span class="diff Easy">Easy</span></td></tr>
+          <tr class="q-row" data-diff="Easy" data-pattern="Array – Two Pointers"><td class="lc-num">27</td><td class="q-name"><a href="https://leetcode.com/problems/remove-element/" target="_blank">Remove Element</a></td><td><span class="diff Easy">Easy</span></td></tr>
+          <tr class="q-row" data-diff="Medium" data-pattern="Array – Two Pointers"><td class="lc-num">80</td><td class="q-name"><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/" target="_blank">Remove Duplicates II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize This Pattern When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Sorted array</strong> + find pair/triplet with target sum</li>
+          <li><strong>"In-place"</strong> removal or deduplication</li>
+          <li><strong>Palindrome check</strong> from both ends</li>
+          <li><strong>Maximize/minimize</strong> area or distance between elements</li>
+          <li>Keywords: <strong>two ends, converge, opposite ends</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  [1, 2, 3, 4, 5, 6]
+   L              R    → check, move L or R
+      L        R       → narrowing inward
+         L  R          → done when L >= R
+
+  Converging:    L→    ←R
+  Same dir:      L→   R→   (slow/fast)</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>TwoPointers.java</span><span>O(n) time · O(1) space</span></div>
+          <div class="code-body"><span class="kw">int</span> <span class="st">left</span> = <span class="nu">0</span>, <span class="st">right</span> = nums.<span class="fn">length</span> - <span class="nu">1</span>;
+<span class="kw">while</span> (<span class="st">left</span> &lt; <span class="st">right</span>) {
+    <span class="kw">int</span> <span class="st">sum</span> = nums[<span class="st">left</span>] + nums[<span class="st">right</span>];
+    <span class="kw">if</span> (<span class="st">sum</span> == <span class="st">target</span>) {
+        <span class="cm">// found!</span>
+        <span class="kw">return</span> <span class="kw">new</span> <span class="tp">int</span>[]{<span class="st">left</span>+<span class="nu">1</span>, <span class="st">right</span>+<span class="nu">1</span>};
+    } <span class="kw">else if</span> (<span class="st">sum</span> &lt; <span class="st">target</span>) {
+        <span class="st">left</span>++;  <span class="cm">// need larger</span>
+    } <span class="kw">else</span> {
+        <span class="st">right</span>--; <span class="cm">// need smaller</span>
+    }
+}
+<span class="cm">// In-place: slow writes, fast reads</span>
+<span class="kw">int</span> <span class="st">slow</span> = <span class="nu">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">fast</span> = <span class="nu">0</span>; <span class="st">fast</span> &lt; n; <span class="st">fast</span>++) {
+    <span class="kw">if</span> (nums[<span class="st">fast</span>] != <span class="st">val</span>)
+        nums[<span class="st">slow</span>++] = nums[<span class="st">fast</span>];
+}</div>
+        </div>
+      </div>
+      <div>
+        <div class="cheat-block-title">⏱ Complexity</div>
+        <div class="complexity">
+          <span class="cbadge time">Time: O(n)</span>
+          <span class="cbadge space">Space: O(1)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SLIDING WINDOW ════ -->
+<div class="pattern-section" id="sec-sw" data-pattern="Array – Sliding Window">
+  <div class="section-header" style="background:rgba(255,159,67,0.08); border-color:rgba(255,159,67,0.3);">
+    <div class="section-dot" style="background:#FF9F43;"></div>
+    <span class="section-title">Sliding Window</span>
+    <span class="section-count">6 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#FF9F43;border-color:#FF9F4340;">subarray / substring</span>
+      <span class="kpill" style="color:#FF9F43;border-color:#FF9F4340;">contiguous</span>
+      <span class="kpill" style="color:#FF9F43;border-color:#FF9F4340;">max/min length</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Easy" data-pattern="Array – Sliding Window"><td class="lc-num">121</td><td class="q-name"><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/" target="_blank">Best Time to Buy & Sell Stock</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Sliding Window"><td class="lc-num">3</td><td class="q-name"><a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/" target="_blank">Longest Substring Without Repeating</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Sliding Window"><td class="lc-num">424</td><td class="q-name"><a href="https://leetcode.com/problems/longest-repeating-character-replacement/" target="_blank">Longest Repeating Char Replacement</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Sliding Window"><td class="lc-num">567</td><td class="q-name"><a href="https://leetcode.com/problems/permutation-in-string/" target="_blank">Permutation in String</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Array – Sliding Window"><td class="lc-num">76</td><td class="q-name"><a href="https://leetcode.com/problems/minimum-window-substring/" target="_blank">Minimum Window Substring</a></td><td><span class="diff Hard">Hard</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Array – Sliding Window"><td class="lc-num">239</td><td class="q-name"><a href="https://leetcode.com/problems/sliding-window-maximum/" target="_blank">Sliding Window Maximum</a></td><td><span class="diff Hard">Hard</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize This Pattern When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Subarray / substring</strong> of size k or variable length</li>
+          <li><strong>Contiguous</strong> elements with a condition</li>
+          <li><strong>Longest / shortest</strong> window satisfying constraint</li>
+          <li>Keywords: <strong>window, contiguous, consecutive, at most k</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Fixed: [a b c | d e f | g h i]
+               ↑___↑  window slides →
+
+  Variable:
+  [a  b  c  d  e  f]
+   L              R   expand R
+   L  →            R  shrink L if invalid
+   
+  Track: map/set of window contents</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>SlidingWindow.java</span><span>O(n) time · O(k) space</span></div>
+          <div class="code-body"><span class="tp">Map</span>&lt;<span class="tp">Character</span>,<span class="tp">Integer</span>&gt; <span class="st">map</span> = <span class="kw">new</span> <span class="fn">HashMap</span>&lt;&gt;();
+<span class="kw">int</span> <span class="st">left</span> = <span class="nu">0</span>, <span class="st">maxLen</span> = <span class="nu">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">right</span> = <span class="nu">0</span>; <span class="st">right</span> &lt; s.<span class="fn">length</span>(); <span class="st">right</span>++) {
+    <span class="cm">// ① Add right element to window</span>
+    <span class="st">map</span>.<span class="fn">merge</span>(s.<span class="fn">charAt</span>(<span class="st">right</span>), <span class="nu">1</span>, Integer::<span class="fn">sum</span>);
+    
+    <span class="cm">// ② Shrink from left while invalid</span>
+    <span class="kw">while</span> (<span class="st">map</span>.<span class="fn">size</span>() > k) {
+        <span class="kw">char</span> <span class="st">lc</span> = s.<span class="fn">charAt</span>(<span class="st">left</span>++);
+        <span class="st">map</span>.<span class="fn">merge</span>(<span class="st">lc</span>, -<span class="nu">1</span>, Integer::<span class="fn">sum</span>);
+        <span class="kw">if</span> (<span class="st">map</span>.<span class="fn">get</span>(<span class="st">lc</span>) == <span class="nu">0</span>) <span class="st">map</span>.<span class="fn">remove</span>(<span class="st">lc</span>);
+    }
+    <span class="cm">// ③ Update answer</span>
+    <span class="st">maxLen</span> = <span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">maxLen</span>, <span class="st">right</span>-<span class="st">left</span>+<span class="nu">1</span>);
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n)</span><span class="cbadge space">Space: O(k)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ PREFIX SUM ════ -->
+<div class="pattern-section" id="sec-ps" data-pattern="Array – Prefix Sum">
+  <div class="section-header" style="background:rgba(249,202,36,0.08); border-color:rgba(249,202,36,0.3);">
+    <div class="section-dot" style="background:#F9CA24;"></div>
+    <span class="section-title">Prefix Sum</span>
+    <span class="section-count">4 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#F9CA24;border-color:#F9CA2440;">range sum</span>
+      <span class="kpill" style="color:#F9CA24;border-color:#F9CA2440;">subarray sum = k</span>
+      <span class="kpill" style="color:#F9CA24;border-color:#F9CA2440;">cumulative</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Easy" data-pattern="Array – Prefix Sum"><td class="lc-num">303</td><td class="q-name"><a href="https://leetcode.com/problems/range-sum-query-immutable/" target="_blank">Range Sum Query – Immutable</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Prefix Sum"><td class="lc-num">304</td><td class="q-name"><a href="https://leetcode.com/problems/range-sum-query-2d-immutable/" target="_blank">Range Sum Query 2D</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Prefix Sum"><td class="lc-num">560</td><td class="q-name"><a href="https://leetcode.com/problems/subarray-sum-equals-k/" target="_blank">Subarray Sum Equals K</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Prefix Sum"><td class="lc-num">238</td><td class="q-name"><a href="https://leetcode.com/problems/product-of-array-except-self/" target="_blank">Product of Array Except Self</a></td><td><span class="diff Medium">Medium</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize This Pattern When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Multiple queries</strong> on subarray sum</li>
+          <li>Find <strong>subarray sum = k</strong> (use HashMap)</li>
+          <li>Need O(1) range queries after O(n) preprocessing</li>
+          <li>Keywords: <strong>sum between i and j, cumulative, range query</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  nums:   [1,  2,  3,  4,  5]
+  prefix: [0,  1,  3,  6, 10, 15]
+
+  sum(i..j) = prefix[j+1] - prefix[i]
+  sum(1..3) = prefix[4] - prefix[1]
+            = 10 - 1 = 9 ✓
+
+  For subarray sum = k:
+  if prefix[j] - prefix[i] = k
+  → use HashMap{prefixSum → count}</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>PrefixSum.java</span><span>O(n) time · O(n) space</span></div>
+          <div class="code-body"><span class="cm">// Build prefix</span>
+<span class="kw">int</span>[] <span class="st">pre</span> = <span class="kw">new</span> <span class="kw">int</span>[n+<span class="nu">1</span>];
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">i</span>=<span class="nu">0</span>; <span class="st">i</span>&lt;n; <span class="st">i</span>++)
+    <span class="st">pre</span>[<span class="st">i</span>+<span class="nu">1</span>] = <span class="st">pre</span>[<span class="st">i</span>] + nums[<span class="st">i</span>];
+
+<span class="cm">// Query O(1)</span>
+<span class="kw">int</span> <span class="fn">rangeSum</span>(<span class="kw">int</span> <span class="st">l</span>, <span class="kw">int</span> <span class="st">r</span>) {
+    <span class="kw">return</span> <span class="st">pre</span>[<span class="st">r</span>+<span class="nu">1</span>] - <span class="st">pre</span>[<span class="st">l</span>];
+}
+<span class="cm">// SubarraySum = K → HashMap</span>
+<span class="tp">Map</span>&lt;<span class="tp">Integer</span>,<span class="tp">Integer</span>&gt; <span class="st">seen</span> = <span class="kw">new</span> <span class="fn">HashMap</span>&lt;&gt;();
+<span class="st">seen</span>.<span class="fn">put</span>(<span class="nu">0</span>, <span class="nu">1</span>); <span class="kw">int</span> <span class="st">sum</span>=<span class="nu">0</span>, <span class="st">ans</span>=<span class="nu">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">x</span>: nums) {
+    <span class="st">sum</span> += <span class="st">x</span>;
+    <span class="st">ans</span> += <span class="st">seen</span>.<span class="fn">getOrDefault</span>(<span class="st">sum</span>-k, <span class="nu">0</span>);
+    <span class="st">seen</span>.<span class="fn">merge</span>(<span class="st">sum</span>, <span class="nu">1</span>, Integer::<span class="fn">sum</span>);
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Build: O(n) · Query: O(1)</span><span class="cbadge space">Space: O(n)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ KADANE'S ════ -->
+<div class="pattern-section" id="sec-ka" data-pattern="Array – Kadane's Algorithm">
+  <div class="section-header" style="background:rgba(72,219,251,0.08); border-color:rgba(72,219,251,0.3);">
+    <div class="section-dot" style="background:#48DBFB;"></div>
+    <span class="section-title">Kadane's Algorithm</span>
+    <span class="section-count">3 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#48DBFB;border-color:#48DBFB40;">max subarray</span>
+      <span class="kpill" style="color:#48DBFB;border-color:#48DBFB40;">contiguous sum</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Kadane's Algorithm"><td class="lc-num">53</td><td class="q-name"><a href="https://leetcode.com/problems/maximum-subarray/" target="_blank">Maximum Subarray</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Kadane's Algorithm"><td class="lc-num">918</td><td class="q-name"><a href="https://leetcode.com/problems/maximum-sum-circular-subarray/" target="_blank">Maximum Sum Circular Subarray</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Kadane's Algorithm"><td class="lc-num">152</td><td class="q-name"><a href="https://leetcode.com/problems/maximum-product-subarray/" target="_blank">Maximum Product Subarray</a></td><td><span class="diff Medium">Medium</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Maximum / minimum sum</strong> of contiguous subarray</li>
+          <li>Track running sum, reset to 0 if negative</li>
+          <li>Circular → max(normal, total - minSubarray)</li>
+          <li>Keywords: <strong>maximum subarray, contiguous, running sum</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+   cur: -2  1  -2  4   3  5  6   1  5
+   max: -2  1   1  4   4  5  6   6  6
+   
+   Rule: cur = max(cur+x, x)
+         if cur&lt;0 → reset to current x</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>Kadanes.java</span><span>O(n) · O(1)</span></div>
+          <div class="code-body"><span class="kw">int</span> <span class="st">cur</span> = nums[<span class="nu">0</span>], <span class="st">max</span> = nums[<span class="nu">0</span>];
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">i</span>=<span class="nu">1</span>; <span class="st">i</span>&lt;n; <span class="st">i</span>++) {
+    <span class="st">cur</span> = <span class="tp">Math</span>.<span class="fn">max</span>(nums[<span class="st">i</span>], <span class="st">cur</span>+nums[<span class="st">i</span>]);
+    <span class="st">max</span> = <span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">max</span>, <span class="st">cur</span>);
+}
+<span class="cm">// Product variant: track min too!</span>
+<span class="kw">int</span> <span class="st">mn</span>=nums[<span class="nu">0</span>], <span class="st">mx</span>=nums[<span class="nu">0</span>], <span class="st">res</span>=nums[<span class="nu">0</span>];
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">i</span>=<span class="nu">1</span>; <span class="st">i</span>&lt;n; <span class="st">i</span>++) {
+    <span class="kw">int</span> <span class="st">a</span>=<span class="st">mn</span>*nums[<span class="st">i</span>], <span class="st">b</span>=<span class="st">mx</span>*nums[<span class="st">i</span>];
+    <span class="st">mn</span> = <span class="tp">Math</span>.<span class="fn">min</span>(nums[<span class="st">i</span>], <span class="tp">Math</span>.<span class="fn">min</span>(<span class="st">a</span>,<span class="st">b</span>));
+    <span class="st">mx</span> = <span class="tp">Math</span>.<span class="fn">max</span>(nums[<span class="st">i</span>], <span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">a</span>,<span class="st">b</span>));
+    <span class="st">res</span> = <span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">res</span>, <span class="st">mx</span>);
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n)</span><span class="cbadge space">Space: O(1)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ BINARY SEARCH ════ -->
+<div class="pattern-section" id="sec-bs" data-pattern="Array – Binary Search">
+  <div class="section-header" style="background:rgba(84,160,255,0.08); border-color:rgba(84,160,255,0.3);">
+    <div class="section-dot" style="background:#54A0FF;"></div>
+    <span class="section-title">Binary Search</span>
+    <span class="section-count">6 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#54A0FF;border-color:#54A0FF40;">sorted / monotone</span>
+      <span class="kpill" style="color:#54A0FF;border-color:#54A0FF40;">log n</span>
+      <span class="kpill" style="color:#54A0FF;border-color:#54A0FF40;">rotated</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Easy" data-pattern="Array – Binary Search"><td class="lc-num">704</td><td class="q-name"><a href="https://leetcode.com/problems/binary-search/" target="_blank">Binary Search</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Binary Search"><td class="lc-num">74</td><td class="q-name"><a href="https://leetcode.com/problems/search-a-2d-matrix/" target="_blank">Search a 2D Matrix</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Binary Search"><td class="lc-num">153</td><td class="q-name"><a href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/" target="_blank">Find Min in Rotated Sorted Array</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Binary Search"><td class="lc-num">33</td><td class="q-name"><a href="https://leetcode.com/problems/search-in-rotated-sorted-array/" target="_blank">Search in Rotated Sorted Array</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Array – Binary Search"><td class="lc-num">981</td><td class="q-name"><a href="https://leetcode.com/problems/time-based-key-value-store/" target="_blank">Time Based Key-Value Store</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Array – Binary Search"><td class="lc-num">4</td><td class="q-name"><a href="https://leetcode.com/problems/median-of-two-sorted-arrays/" target="_blank">Median of Two Sorted Arrays</a></td><td><span class="diff Hard">Hard</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Sorted array</strong> — search in O(log n)</li>
+          <li><strong>Rotated</strong> array — determine which half is sorted</li>
+          <li><strong>Binary search on answer</strong> — monotone predicate</li>
+          <li>Keywords: <strong>sorted, O(log n), find target, minimum/maximum feasible</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  [1, 3, 5, 7, 9, 11, 13]
+   L        M          R
+         check mid
+   if < target → L = mid+1
+   if > target → R = mid-1
+   
+  Golden template:
+  while L &lt;= R → find exact
+  while L &lt; R  → find boundary</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>BinarySearch.java</span><span>O(log n) · O(1)</span></div>
+          <div class="code-body"><span class="kw">int</span> <span class="st">lo</span> = <span class="nu">0</span>, <span class="st">hi</span> = nums.<span class="fn">length</span>-<span class="nu">1</span>;
+<span class="kw">while</span> (<span class="st">lo</span> &lt;= <span class="st">hi</span>) {
+    <span class="kw">int</span> <span class="st">mid</span> = <span class="st">lo</span> + (<span class="st">hi</span>-<span class="st">lo</span>)/<span class="nu">2</span>; <span class="cm">// avoids overflow</span>
+    <span class="kw">if</span> (nums[<span class="st">mid</span>] == <span class="st">target</span>) <span class="kw">return</span> <span class="st">mid</span>;
+    <span class="kw">if</span> (nums[<span class="st">mid</span>] &lt; <span class="st">target</span>) <span class="st">lo</span> = <span class="st">mid</span>+<span class="nu">1</span>;
+    <span class="kw">else</span> <span class="st">hi</span> = <span class="st">mid</span>-<span class="nu">1</span>;
+}
+<span class="cm">// Left boundary (first occurrence)</span>
+<span class="kw">while</span> (<span class="st">lo</span> &lt; <span class="st">hi</span>) {
+    <span class="kw">int</span> <span class="st">mid</span> = (<span class="st">lo</span>+<span class="st">hi</span>)/<span class="nu">2</span>;
+    <span class="kw">if</span> (nums[<span class="st">mid</span>] &lt; <span class="st">target</span>) <span class="st">lo</span> = <span class="st">mid</span>+<span class="nu">1</span>;
+    <span class="kw">else</span> <span class="st">hi</span> = <span class="st">mid</span>; <span class="cm">// keep mid</span>
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(log n)</span><span class="cbadge space">Space: O(1)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ STACK/QUEUE ════ -->
+<div class="pattern-section" id="sec-st" data-pattern="Stack / Queue">
+  <div class="section-header" style="background:rgba(253,150,68,0.08); border-color:rgba(253,150,68,0.3);">
+    <div class="section-dot" style="background:#FD9644;"></div>
+    <span class="section-title">Stack / Queue</span>
+    <span class="section-count">8 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#FD9644;border-color:#FD964440;">matching brackets</span>
+      <span class="kpill" style="color:#FD9644;border-color:#FD964440;">monotonic</span>
+      <span class="kpill" style="color:#FD9644;border-color:#FD964440;">LIFO</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Easy" data-pattern="Stack / Queue"><td class="lc-num">20</td><td class="q-name"><a href="https://leetcode.com/problems/valid-parentheses/" target="_blank">Valid Parentheses</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Stack / Queue"><td class="lc-num">155</td><td class="q-name"><a href="https://leetcode.com/problems/min-stack/" target="_blank">Min Stack</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Stack / Queue"><td class="lc-num">150</td><td class="q-name"><a href="https://leetcode.com/problems/evaluate-reverse-polish-notation/" target="_blank">Evaluate Reverse Polish Notation</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Stack / Queue"><td class="lc-num">224</td><td class="q-name"><a href="https://leetcode.com/problems/basic-calculator/" target="_blank">Basic Calculator</a></td><td><span class="diff Hard">Hard</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Stack / Queue"><td class="lc-num">227</td><td class="q-name"><a href="https://leetcode.com/problems/basic-calculator-ii/" target="_blank">Basic Calculator II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Stack / Queue"><td class="lc-num">71</td><td class="q-name"><a href="https://leetcode.com/problems/simplify-path/" target="_blank">Simplify Path</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Stack / Queue"><td class="lc-num">232</td><td class="q-name"><a href="https://leetcode.com/problems/implement-queue-using-stacks/" target="_blank">Implement Queue using Stacks</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Stack / Queue"><td class="lc-num">225</td><td class="q-name"><a href="https://leetcode.com/problems/implement-stack-using-queues/" target="_blank">Implement Stack using Queues</a></td><td><span class="diff Easy">Easy</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Matching brackets</strong> / nested structure</li>
+          <li><strong>Undo/redo</strong> or process in reverse</li>
+          <li><strong>Monotonic stack</strong> — next greater/smaller element</li>
+          <li>Keywords: <strong>balanced, valid, LIFO, previous state, history</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Valid Parens:
+  ( [ { } ] )
+  push (,[,{
+  pop  on },],)
+
+  Monotonic Stack (next greater):
+  [2, 1, 5, 3, 6]
+   stack stays decreasing:
+   [2] → [2,1] → pop until 5>top
+   result: [5, 5, 6, 6, -1]</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>Stack.java</span><span>O(n) · O(n)</span></div>
+          <div class="code-body"><span class="tp">Deque</span>&lt;<span class="tp">Character</span>&gt; <span class="st">stack</span>=<span class="kw">new</span> <span class="fn">ArrayDeque</span>&lt;&gt;();
+<span class="kw">for</span> (<span class="kw">char</span> <span class="st">c</span>: s.<span class="fn">toCharArray</span>()) {
+    <span class="kw">if</span> (<span class="st">c</span>==<span class="st">'('</span>||<span class="st">c</span>==<span class="st">'['</span>||<span class="st">c</span>==<span class="st">'{'</span>) <span class="st">stack</span>.<span class="fn">push</span>(<span class="st">c</span>);
+    <span class="kw">else</span> {
+        <span class="kw">if</span> (<span class="st">stack</span>.<span class="fn">isEmpty</span>()) <span class="kw">return false</span>;
+        <span class="kw">char</span> <span class="st">t</span>=<span class="st">stack</span>.<span class="fn">pop</span>();
+        <span class="kw">if</span> (<span class="st">c</span>==<span class="st">')'</span>&&<span class="st">t</span>!=<span class="st">'('</span>) <span class="kw">return false</span>;
+    }
+}
+<span class="kw">return</span> <span class="st">stack</span>.<span class="fn">isEmpty</span>();
+<span class="cm">// Prefer Deque over Stack class in Java!</span></div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n)</span><span class="cbadge space">Space: O(n)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ LINKED LIST ════ -->
+<div class="pattern-section" id="sec-ll" data-pattern="Linked List">
+  <div class="section-header" style="background:rgba(116,185,255,0.08); border-color:rgba(116,185,255,0.3);">
+    <div class="section-dot" style="background:#74B9FF;"></div>
+    <span class="section-title">Linked List</span>
+    <span class="section-count">12 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#74B9FF;border-color:#74B9FF40;">reverse</span>
+      <span class="kpill" style="color:#74B9FF;border-color:#74B9FF40;">fast/slow</span>
+      <span class="kpill" style="color:#74B9FF;border-color:#74B9FF40;">cycle</span>
+      <span class="kpill" style="color:#74B9FF;border-color:#74B9FF40;">dummy head</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Easy" data-pattern="Linked List"><td class="lc-num">206</td><td class="q-name"><a href="https://leetcode.com/problems/reverse-linked-list/" target="_blank">Reverse Linked List</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Linked List"><td class="lc-num">21</td><td class="q-name"><a href="https://leetcode.com/problems/merge-two-sorted-lists/" target="_blank">Merge Two Sorted Lists</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Linked List"><td class="lc-num">138</td><td class="q-name"><a href="https://leetcode.com/problems/copy-list-with-random-pointer/" target="_blank">Copy List with Random Pointer</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Linked List"><td class="lc-num">92</td><td class="q-name"><a href="https://leetcode.com/problems/reverse-linked-list-ii/" target="_blank">Reverse Linked List II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Linked List"><td class="lc-num">25</td><td class="q-name"><a href="https://leetcode.com/problems/reverse-nodes-in-k-group/" target="_blank">Reverse Nodes in k-Group</a></td><td><span class="diff Hard">Hard</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Linked List"><td class="lc-num">19</td><td class="q-name"><a href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" target="_blank">Remove Nth Node From End</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Linked List"><td class="lc-num">141</td><td class="q-name"><a href="https://leetcode.com/problems/linked-list-cycle/" target="_blank">Linked List Cycle</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Linked List"><td class="lc-num">142</td><td class="q-name"><a href="https://leetcode.com/problems/linked-list-cycle-ii/" target="_blank">Linked List Cycle II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Linked List"><td class="lc-num">146</td><td class="q-name"><a href="https://leetcode.com/problems/lru-cache/" target="_blank">LRU Cache</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Linked List"><td class="lc-num">82</td><td class="q-name"><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/" target="_blank">Remove Duplicates (Sorted List II)</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Linked List"><td class="lc-num">61</td><td class="q-name"><a href="https://leetcode.com/problems/rotate-list/" target="_blank">Rotate List</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Linked List"><td class="lc-num">86</td><td class="q-name"><a href="https://leetcode.com/problems/partition-list/" target="_blank">Partition List</a></td><td><span class="diff Medium">Medium</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Cycle detection</strong> → fast/slow (Floyd's)</li>
+          <li><strong>Nth from end</strong> → two pointers, gap = n</li>
+          <li><strong>Reverse</strong> → prev/curr/next triple</li>
+          <li><strong>Always use Dummy head</strong> when modifying head</li>
+          <li>Keywords: <strong>reverse, cycle, merge, nth, kth group</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Reverse:
+  null ← 1 ← 2 ← 3 ← 4
+  prev  cur  next
+  
+  Fast/Slow (cycle):
+  S→  F→→  (fast moves 2x)
+  if they meet → cycle exists
+  
+  Dummy Head:
+  dummy → 1 → 2 → 3
+  ↑ simplifies edge cases!</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>LinkedList.java</span><span>O(n) · O(1)</span></div>
+          <div class="code-body"><span class="cm">// Reverse</span>
+<span class="tp">ListNode</span> <span class="st">prev</span>=<span class="kw">null</span>, <span class="st">curr</span>=<span class="st">head</span>;
+<span class="kw">while</span>(<span class="st">curr</span>!=<span class="kw">null</span>){
+    <span class="tp">ListNode</span> <span class="st">nxt</span>=<span class="st">curr</span>.<span class="st">next</span>;
+    <span class="st">curr</span>.<span class="st">next</span>=<span class="st">prev</span>;
+    <span class="st">prev</span>=<span class="st">curr</span>; <span class="st">curr</span>=<span class="st">nxt</span>;
+}
+<span class="cm">// Cycle detection</span>
+<span class="tp">ListNode</span> <span class="st">slow</span>=<span class="st">head</span>, <span class="st">fast</span>=<span class="st">head</span>;
+<span class="kw">while</span>(<span class="st">fast</span>!=<span class="kw">null</span> && <span class="st">fast</span>.<span class="st">next</span>!=<span class="kw">null</span>){
+    <span class="st">slow</span>=<span class="st">slow</span>.<span class="st">next</span>;
+    <span class="st">fast</span>=<span class="st">fast</span>.<span class="st">next</span>.<span class="st">next</span>;
+    <span class="kw">if</span>(<span class="st">slow</span>==<span class="st">fast</span>) <span class="kw">return true</span>;
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n)</span><span class="cbadge space">Space: O(1)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ BINARY TREE BFS ════ -->
+<div class="pattern-section" id="sec-bfs" data-pattern="Binary Tree – BFS">
+  <div class="section-header" style="background:rgba(85,239,196,0.08); border-color:rgba(85,239,196,0.3);">
+    <div class="section-dot" style="background:#55EFC4;"></div>
+    <span class="section-title">Binary Tree – BFS</span>
+    <span class="section-count">5 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#55EFC4;border-color:#55EFC440;">level order</span>
+      <span class="kpill" style="color:#55EFC4;border-color:#55EFC440;">right side view</span>
+      <span class="kpill" style="color:#55EFC4;border-color:#55EFC440;">queue</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – BFS"><td class="lc-num">102</td><td class="q-name"><a href="https://leetcode.com/problems/binary-tree-level-order-traversal/" target="_blank">Binary Tree Level Order Traversal</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – BFS"><td class="lc-num">103</td><td class="q-name"><a href="https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/" target="_blank">Binary Tree Zigzag Level Order</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – BFS"><td class="lc-num">107</td><td class="q-name"><a href="https://leetcode.com/problems/binary-tree-level-order-traversal-ii/" target="_blank">Level Order Traversal II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Binary Tree – BFS"><td class="lc-num">637</td><td class="q-name"><a href="https://leetcode.com/problems/average-of-levels-in-binary-tree/" target="_blank">Average of Levels in Binary Tree</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – BFS"><td class="lc-num">199</td><td class="q-name"><a href="https://leetcode.com/problems/binary-tree-right-side-view/" target="_blank">Binary Tree Right Side View</a></td><td><span class="diff Medium">Medium</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Level by level</strong> traversal needed</li>
+          <li><strong>Shortest path</strong> in unweighted graph/tree</li>
+          <li><strong>Right/left side view</strong> (last of each level)</li>
+          <li>Keywords: <strong>level order, layer, row, shortest</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+       1         ← level 0
+      / \
+     2   3       ← level 1
+    / \   \
+   4   5   6     ← level 2
+
+  Queue: [1] → process 1, add [2,3]
+         [2,3] → process level 1
+         [4,5,6] → process level 2</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>BFS.java</span><span>O(n) · O(w) w=max width</span></div>
+          <div class="code-body"><span class="tp">Queue</span>&lt;<span class="tp">TreeNode</span>&gt; <span class="st">q</span>=<span class="kw">new</span> <span class="fn">LinkedList</span>&lt;&gt;();
+<span class="kw">if</span>(<span class="st">root</span>!=<span class="kw">null</span>) <span class="st">q</span>.<span class="fn">offer</span>(<span class="st">root</span>);
+<span class="kw">while</span>(!<span class="st">q</span>.<span class="fn">isEmpty</span>()){
+    <span class="kw">int</span> <span class="st">size</span>=<span class="st">q</span>.<span class="fn">size</span>(); <span class="cm">// freeze current level size!</span>
+    <span class="tp">List</span>&lt;<span class="tp">Integer</span>&gt; <span class="st">level</span>=<span class="kw">new</span> <span class="fn">ArrayList</span>&lt;&gt;();
+    <span class="kw">for</span>(<span class="kw">int</span> <span class="st">i</span>=<span class="nu">0</span>; <span class="st">i</span>&lt;<span class="st">size</span>; <span class="st">i</span>++){
+        <span class="tp">TreeNode</span> <span class="st">node</span>=<span class="st">q</span>.<span class="fn">poll</span>();
+        <span class="st">level</span>.<span class="fn">add</span>(<span class="st">node</span>.<span class="st">val</span>);
+        <span class="kw">if</span>(<span class="st">node</span>.<span class="st">left</span>!=<span class="kw">null</span>) <span class="st">q</span>.<span class="fn">offer</span>(<span class="st">node</span>.<span class="st">left</span>);
+        <span class="kw">if</span>(<span class="st">node</span>.<span class="st">right</span>!=<span class="kw">null</span>) <span class="st">q</span>.<span class="fn">offer</span>(<span class="st">node</span>.<span class="st">right</span>);
+    }
+    <span class="st">res</span>.<span class="fn">add</span>(<span class="st">level</span>);
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n)</span><span class="cbadge space">Space: O(w)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ BINARY TREE DFS ════ -->
+<div class="pattern-section" id="sec-dfs" data-pattern="Binary Tree – DFS">
+  <div class="section-header" style="background:rgba(0,184,148,0.08); border-color:rgba(0,184,148,0.3);">
+    <div class="section-dot" style="background:#00B894;"></div>
+    <span class="section-title">Binary Tree – DFS</span>
+    <span class="section-count">13 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#00B894;border-color:#00B89440;">recursion</span>
+      <span class="kpill" style="color:#00B894;border-color:#00B89440;">path sum</span>
+      <span class="kpill" style="color:#00B894;border-color:#00B89440;">inorder/preorder</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Easy" data-pattern="Binary Tree – DFS"><td class="lc-num">104</td><td class="q-name"><a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/" target="_blank">Maximum Depth of Binary Tree</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Binary Tree – DFS"><td class="lc-num">112</td><td class="q-name"><a href="https://leetcode.com/problems/path-sum/" target="_blank">Path Sum</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – DFS"><td class="lc-num">113</td><td class="q-name"><a href="https://leetcode.com/problems/path-sum-ii/" target="_blank">Path Sum II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Binary Tree – DFS"><td class="lc-num">124</td><td class="q-name"><a href="https://leetcode.com/problems/binary-tree-maximum-path-sum/" target="_blank">Binary Tree Maximum Path Sum</a></td><td><span class="diff Hard">Hard</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Binary Tree – DFS"><td class="lc-num">226</td><td class="q-name"><a href="https://leetcode.com/problems/invert-binary-tree/" target="_blank">Invert Binary Tree</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – DFS"><td class="lc-num">236</td><td class="q-name"><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/" target="_blank">Lowest Common Ancestor of BT</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Binary Tree – DFS"><td class="lc-num">100</td><td class="q-name"><a href="https://leetcode.com/problems/same-tree/" target="_blank">Same Tree</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Binary Tree – DFS"><td class="lc-num">101</td><td class="q-name"><a href="https://leetcode.com/problems/symmetric-tree/" target="_blank">Symmetric Tree</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – DFS"><td class="lc-num">114</td><td class="q-name"><a href="https://leetcode.com/problems/flatten-binary-tree-to-linked-list/" target="_blank">Flatten Binary Tree to Linked List</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – DFS"><td class="lc-num">105</td><td class="q-name"><a href="https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/" target="_blank">Construct BT from Preorder & Inorder</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – DFS"><td class="lc-num">106</td><td class="q-name"><a href="https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/" target="_blank">Construct BT from Inorder & Postorder</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – DFS"><td class="lc-num">116</td><td class="q-name"><a href="https://leetcode.com/problems/populating-next-right-pointers-in-each-node/" target="_blank">Populating Next Right Pointers</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Binary Tree – DFS"><td class="lc-num">117</td><td class="q-name"><a href="https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/" target="_blank">Populating Next Right Pointers II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Path from root</strong> or any node to leaf</li>
+          <li><strong>Depth / height</strong> of subtrees</li>
+          <li><strong>Pre/In/Post order</strong> traversal needed</li>
+          <li>Think: <em>what does each node need from children?</em></li>
+          <li>Keywords: <strong>path, depth, traverse, construct, LCA</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Pre:  root → L → R   [1,2,4,5,3]
+  In:   L → root → R   [4,2,5,1,3]
+  Post: L → R → root   [4,5,2,3,1]
+
+  DFS returns value UP to parent:
+       f(node)
+      /       \
+  f(left)   f(right)
+  combine and return to parent</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>DFS.java</span><span>O(n) · O(h)</span></div>
+          <div class="code-body"><span class="kw">int</span> <span class="fn">dfs</span>(<span class="tp">TreeNode</span> <span class="st">node</span>) {
+    <span class="kw">if</span> (<span class="st">node</span>==<span class="kw">null</span>) <span class="kw">return</span> <span class="nu">0</span>; <span class="cm">// base</span>
+    <span class="kw">int</span> <span class="st">L</span> = <span class="fn">dfs</span>(<span class="st">node</span>.<span class="st">left</span>);
+    <span class="kw">int</span> <span class="st">R</span> = <span class="fn">dfs</span>(<span class="st">node</span>.<span class="st">right</span>);
+    <span class="cm">// combine L, R, node.val</span>
+    <span class="kw">return</span> <span class="nu">1</span> + <span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">L</span>, <span class="st">R</span>);
+}
+<span class="cm">// Global max trick (124)</span>
+<span class="kw">int</span> <span class="st">ans</span> = <span class="tp">Integer</span>.<span class="st">MIN_VALUE</span>;
+<span class="kw">int</span> <span class="fn">gain</span>(<span class="tp">TreeNode</span> <span class="st">n</span>) {
+    <span class="kw">if</span>(<span class="st">n</span>==<span class="kw">null</span>) <span class="kw">return</span> <span class="nu">0</span>;
+    <span class="kw">int</span> <span class="st">l</span>=<span class="tp">Math</span>.<span class="fn">max</span>(<span class="fn">gain</span>(<span class="st">n</span>.<span class="st">left</span>),<span class="nu">0</span>);
+    <span class="kw">int</span> <span class="st">r</span>=<span class="tp">Math</span>.<span class="fn">max</span>(<span class="fn">gain</span>(<span class="st">n</span>.<span class="st">right</span>),<span class="nu">0</span>);
+    <span class="st">ans</span>=<span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">ans</span>,<span class="st">l</span>+<span class="st">r</span>+<span class="st">n</span>.<span class="st">val</span>);
+    <span class="kw">return</span> <span class="st">n</span>.<span class="st">val</span>+<span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">l</span>,<span class="st">r</span>);
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n)</span><span class="cbadge space">Space: O(h)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ BACKTRACKING ════ -->
+<div class="pattern-section" id="sec-bt" data-pattern="Backtracking">
+  <div class="section-header" style="background:rgba(225,112,85,0.08); border-color:rgba(225,112,85,0.3);">
+    <div class="section-dot" style="background:#E17055;"></div>
+    <span class="section-title">Backtracking</span>
+    <span class="section-count">11 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#E17055;border-color:#E1705540;">permutations</span>
+      <span class="kpill" style="color:#E17055;border-color:#E1705540;">subsets</span>
+      <span class="kpill" style="color:#E17055;border-color:#E1705540;">combinations</span>
+      <span class="kpill" style="color:#E17055;border-color:#E1705540;">all solutions</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">17</td><td class="q-name"><a href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/" target="_blank">Letter Combinations of Phone Number</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">46</td><td class="q-name"><a href="https://leetcode.com/problems/permutations/" target="_blank">Permutations</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">78</td><td class="q-name"><a href="https://leetcode.com/problems/subsets/" target="_blank">Subsets</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">39</td><td class="q-name"><a href="https://leetcode.com/problems/combination-sum/" target="_blank">Combination Sum</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">40</td><td class="q-name"><a href="https://leetcode.com/problems/combination-sum-ii/" target="_blank">Combination Sum II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">131</td><td class="q-name"><a href="https://leetcode.com/problems/palindrome-partitioning/" target="_blank">Palindrome Partitioning</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">47</td><td class="q-name"><a href="https://leetcode.com/problems/permutations-ii/" target="_blank">Permutations II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">77</td><td class="q-name"><a href="https://leetcode.com/problems/combinations/" target="_blank">Combinations</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Backtracking"><td class="lc-num">90</td><td class="q-name"><a href="https://leetcode.com/problems/subsets-ii/" target="_blank">Subsets II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Backtracking"><td class="lc-num">51</td><td class="q-name"><a href="https://leetcode.com/problems/n-queens/" target="_blank">N-Queens</a></td><td><span class="diff Hard">Hard</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Backtracking"><td class="lc-num">52</td><td class="q-name"><a href="https://leetcode.com/problems/n-queens-ii/" target="_blank">N-Queens II</a></td><td><span class="diff Hard">Hard</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li>Need <strong>all possible</strong> combinations/permutations/subsets</li>
+          <li><strong>Explore, make choice, undo choice</strong></li>
+          <li>Constraint satisfaction (N-Queens)</li>
+          <li>Keywords: <strong>all solutions, generate, find all, combinations, partitions</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  choose → explore → unchoose
+  
+  []
+  ├─[1]──────[1,2]─[1,2,3]✓
+  │          └[1,3]✓
+  ├─[2]──────[2,3]✓
+  └─[3]✓
+  
+  Prune duplicates: sort + skip
+  if(i>start && nums[i]==nums[i-1]) continue</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>Backtrack.java</span><span>O(2^n) · O(n)</span></div>
+          <div class="code-body"><span class="tp">List</span>&lt;<span class="tp">List</span>&lt;<span class="tp">Integer</span>&gt;&gt; <span class="st">res</span>=<span class="kw">new</span> <span class="fn">ArrayList</span>&lt;&gt;();
+<span class="kw">void</span> <span class="fn">backtrack</span>(<span class="kw">int</span> <span class="st">start</span>, <span class="tp">List</span>&lt;<span class="tp">Integer</span>&gt; <span class="st">curr</span>) {
+    <span class="st">res</span>.<span class="fn">add</span>(<span class="kw">new</span> <span class="fn">ArrayList</span>&lt;&gt;(<span class="st">curr</span>)); <span class="cm">// snapshot!</span>
+    <span class="kw">for</span> (<span class="kw">int</span> <span class="st">i</span>=<span class="st">start</span>; <span class="st">i</span>&lt;nums.<span class="fn">length</span>; <span class="st">i</span>++) {
+        <span class="cm">// prune duplicates</span>
+        <span class="kw">if</span>(<span class="st">i</span>&gt;<span class="st">start</span>&&nums[<span class="st">i</span>]==nums[<span class="st">i</span>-<span class="nu">1</span>]) <span class="kw">continue</span>;
+        <span class="st">curr</span>.<span class="fn">add</span>(nums[<span class="st">i</span>]);      <span class="cm">// choose</span>
+        <span class="fn">backtrack</span>(<span class="st">i</span>+<span class="nu">1</span>, <span class="st">curr</span>);   <span class="cm">// explore</span>
+        <span class="st">curr</span>.<span class="fn">remove</span>(<span class="st">curr</span>.<span class="fn">size</span>()-<span class="nu">1</span>); <span class="cm">// unchoose</span>
+    }
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(2ⁿ · n)</span><span class="cbadge space">Space: O(n)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ DP 1D ════ -->
+<div class="pattern-section" id="sec-dp1" data-pattern="Dynamic Programming – 1D">
+  <div class="section-header" style="background:rgba(0,206,201,0.08); border-color:rgba(0,206,201,0.3);">
+    <div class="section-dot" style="background:#00CEC9;"></div>
+    <span class="section-title">Dynamic Programming – 1D</span>
+    <span class="section-count">7 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#00CEC9;border-color:#00CEC940;">overlapping subproblems</span>
+      <span class="kpill" style="color:#00CEC9;border-color:#00CEC940;">optimal substructure</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Easy" data-pattern="Dynamic Programming – 1D"><td class="lc-num">70</td><td class="q-name"><a href="https://leetcode.com/problems/climbing-stairs/" target="_blank">Climbing Stairs</a></td><td><span class="diff Easy">Easy</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 1D"><td class="lc-num">198</td><td class="q-name"><a href="https://leetcode.com/problems/house-robber/" target="_blank">House Robber</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 1D"><td class="lc-num">213</td><td class="q-name"><a href="https://leetcode.com/problems/house-robber-ii/" target="_blank">House Robber II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 1D"><td class="lc-num">300</td><td class="q-name"><a href="https://leetcode.com/problems/longest-increasing-subsequence/" target="_blank">Longest Increasing Subsequence</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 1D"><td class="lc-num">139</td><td class="q-name"><a href="https://leetcode.com/problems/word-break/" target="_blank">Word Break</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 1D"><td class="lc-num">322</td><td class="q-name"><a href="https://leetcode.com/problems/coin-change/" target="_blank">Coin Change</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 1D"><td class="lc-num">377</td><td class="q-name"><a href="https://leetcode.com/problems/combination-sum-iv/" target="_blank">Combination Sum IV</a></td><td><span class="diff Medium">Medium</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Optimal value</strong> (min/max) over choices</li>
+          <li><strong>Count ways</strong> to reach a goal</li>
+          <li><strong>Overlapping subproblems</strong> — cache repeated work</li>
+          <li>Think: <em>dp[i] = best answer for first i elements</em></li>
+          <li>Keywords: <strong>minimum coins, ways, can reach, optimal, sequence</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Coin Change (amount=11, coins=[1,5,6]):
+  dp[0]=0
+  dp[1]=1  (1)
+  dp[5]=1  (5)
+  dp[6]=1  (6)
+  dp[11]=2 (5+6) ← dp[11-6]+1
+
+  Build bottom-up:
+  for each amount → try each coin</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>DP1D.java</span><span>O(n·k) · O(n)</span></div>
+          <div class="code-body"><span class="cm">// Coin Change</span>
+<span class="kw">int</span>[] <span class="st">dp</span> = <span class="kw">new</span> <span class="kw">int</span>[<span class="st">amount</span>+<span class="nu">1</span>];
+<span class="tp">Arrays</span>.<span class="fn">fill</span>(<span class="st">dp</span>, <span class="st">amount</span>+<span class="nu">1</span>);
+<span class="st">dp</span>[<span class="nu">0</span>] = <span class="nu">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">a</span>=<span class="nu">1</span>; <span class="st">a</span>&lt;=<span class="st">amount</span>; <span class="st">a</span>++)
+    <span class="kw">for</span> (<span class="kw">int</span> <span class="st">c</span>: <span class="st">coins</span>)
+        <span class="kw">if</span> (<span class="st">a</span>-<span class="st">c</span> &gt;= <span class="nu">0</span>)
+            <span class="st">dp</span>[<span class="st">a</span>] = <span class="tp">Math</span>.<span class="fn">min</span>(<span class="st">dp</span>[<span class="st">a</span>], <span class="st">dp</span>[<span class="st">a</span>-<span class="st">c</span>]+<span class="nu">1</span>);
+<span class="cm">// LIS: dp[i] = LIS ending at i</span>
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">i</span>=<span class="nu">0</span>; <span class="st">i</span>&lt;n; <span class="st">i</span>++)
+    <span class="kw">for</span> (<span class="kw">int</span> <span class="st">j</span>=<span class="nu">0</span>; <span class="st">j</span>&lt;<span class="st">i</span>; <span class="st">j</span>++)
+        <span class="kw">if</span>(<span class="st">nums</span>[<span class="st">j</span>]&lt;<span class="st">nums</span>[<span class="st">i</span>])
+            <span class="st">dp</span>[<span class="st">i</span>]=<span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">dp</span>[<span class="st">i</span>],<span class="st">dp</span>[<span class="st">j</span>]+<span class="nu">1</span>);</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n·k)</span><span class="cbadge space">Space: O(n)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ DP 2D ════ -->
+<div class="pattern-section" id="sec-dp2" data-pattern="Dynamic Programming – 2D">
+  <div class="section-header" style="background:rgba(46,204,113,0.08); border-color:rgba(46,204,113,0.3);">
+    <div class="section-dot" style="background:#2ECC71;"></div>
+    <span class="section-title">Dynamic Programming – 2D</span>
+    <span class="section-count">11 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#2ECC71;border-color:#2ECC7140;">grid/matrix</span>
+      <span class="kpill" style="color:#2ECC71;border-color:#2ECC7140;">two strings</span>
+      <span class="kpill" style="color:#2ECC71;border-color:#2ECC7140;">LCS/edit distance</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">62</td><td class="q-name"><a href="https://leetcode.com/problems/unique-paths/" target="_blank">Unique Paths</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">64</td><td class="q-name"><a href="https://leetcode.com/problems/minimum-path-sum/" target="_blank">Minimum Path Sum</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">1143</td><td class="q-name"><a href="https://leetcode.com/problems/longest-common-subsequence/" target="_blank">Longest Common Subsequence</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">72</td><td class="q-name"><a href="https://leetcode.com/problems/edit-distance/" target="_blank">Edit Distance</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">97</td><td class="q-name"><a href="https://leetcode.com/problems/interleaving-string/" target="_blank">Interleaving String</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">120</td><td class="q-name"><a href="https://leetcode.com/problems/triangle/" target="_blank">Triangle</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">63</td><td class="q-name"><a href="https://leetcode.com/problems/unique-paths-ii/" target="_blank">Unique Paths II</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">309</td><td class="q-name"><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/" target="_blank">Buy & Sell Stock with Cooldown</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Dynamic Programming – 2D"><td class="lc-num">714</td><td class="q-name"><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/" target="_blank">Buy & Sell Stock with Fee</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Dynamic Programming – 2D"><td class="lc-num">188</td><td class="q-name"><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/" target="_blank">Buy & Sell Stock IV</a></td><td><span class="diff Hard">Hard</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Dynamic Programming – 2D"><td class="lc-num">123</td><td class="q-name"><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/" target="_blank">Buy & Sell Stock III</a></td><td><span class="diff Hard">Hard</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Two strings / sequences</strong> comparison (LCS, edit distance)</li>
+          <li><strong>Grid traversal</strong> (paths, min cost)</li>
+          <li>State has <strong>two dimensions</strong> (i, j)</li>
+          <li>Keywords: <strong>two strings, edit, match, grid, path, matrix DP</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  LCS("abcde","ace") dp table:
+       ""  a  c  e
+  ""  [ 0  0  0  0 ]
+  a   [ 0  1  1  1 ]
+  b   [ 0  1  1  1 ]
+  c   [ 0  1  2  2 ]
+  d   [ 0  1  2  2 ]
+  e   [ 0  1  2  3 ] ← answer=3</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>DP2D.java</span><span>O(m·n) · O(m·n)</span></div>
+          <div class="code-body"><span class="cm">// LCS template</span>
+<span class="kw">int</span>[][] <span class="st">dp</span> = <span class="kw">new</span> <span class="kw">int</span>[m+<span class="nu">1</span>][n+<span class="nu">1</span>];
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">i</span>=<span class="nu">1</span>; <span class="st">i</span>&lt;=m; <span class="st">i</span>++)
+    <span class="kw">for</span> (<span class="kw">int</span> <span class="st">j</span>=<span class="nu">1</span>; <span class="st">j</span>&lt;=n; <span class="st">j</span>++)
+        <span class="kw">if</span> (s1.<span class="fn">charAt</span>(<span class="st">i</span>-<span class="nu">1</span>)==s2.<span class="fn">charAt</span>(<span class="st">j</span>-<span class="nu">1</span>))
+            <span class="st">dp</span>[<span class="st">i</span>][<span class="st">j</span>] = <span class="st">dp</span>[<span class="st">i</span>-<span class="nu">1</span>][<span class="st">j</span>-<span class="nu">1</span>] + <span class="nu">1</span>;
+        <span class="kw">else</span>
+            <span class="st">dp</span>[<span class="st">i</span>][<span class="st">j</span>] = <span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">dp</span>[<span class="st">i</span>-<span class="nu">1</span>][<span class="st">j</span>],<span class="st">dp</span>[<span class="st">i</span>][<span class="st">j</span>-<span class="nu">1</span>]);
+<span class="cm">// Space optimize: 1D rolling array!</span></div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(m·n)</span><span class="cbadge space">Space: O(n) optimized</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ HEAP ════ -->
+<div class="pattern-section" id="sec-heap" data-pattern="Heap / Priority Queue">
+  <div class="section-header" style="background:rgba(243,156,18,0.08); border-color:rgba(243,156,18,0.3);">
+    <div class="section-dot" style="background:#F39C12;"></div>
+    <span class="section-title">Heap / Priority Queue</span>
+    <span class="section-count">6 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#F39C12;border-color:#F39C1240;">top K</span>
+      <span class="kpill" style="color:#F39C12;border-color:#F39C1240;">median stream</span>
+      <span class="kpill" style="color:#F39C12;border-color:#F39C1240;">k smallest/largest</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Medium" data-pattern="Heap / Priority Queue"><td class="lc-num">215</td><td class="q-name"><a href="https://leetcode.com/problems/kth-largest-element-in-an-array/" target="_blank">Kth Largest Element in Array</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Heap / Priority Queue"><td class="lc-num">347</td><td class="q-name"><a href="https://leetcode.com/problems/top-k-frequent-elements/" target="_blank">Top K Frequent Elements</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Heap / Priority Queue"><td class="lc-num">373</td><td class="q-name"><a href="https://leetcode.com/problems/find-k-pairs-with-smallest-sums/" target="_blank">Find K Pairs with Smallest Sums</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Heap / Priority Queue"><td class="lc-num">295</td><td class="q-name"><a href="https://leetcode.com/problems/find-median-from-data-stream/" target="_blank">Find Median from Data Stream</a></td><td><span class="diff Hard">Hard</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Heap / Priority Queue"><td class="lc-num">502</td><td class="q-name"><a href="https://leetcode.com/problems/ipo/" target="_blank">IPO</a></td><td><span class="diff Hard">Hard</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Heap / Priority Queue"><td class="lc-num">23</td><td class="q-name"><a href="https://leetcode.com/problems/merge-k-sorted-lists/" target="_blank">Merge k Sorted Lists</a></td><td><span class="diff Hard">Hard</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Top/Bottom K</strong> elements — min heap of size k</li>
+          <li><strong>Kth smallest/largest</strong> — maintain heap</li>
+          <li><strong>Merge K sorted</strong> streams/lists</li>
+          <li><strong>Median</strong> → two heaps (max+min)</li>
+          <li>Keywords: <strong>top K, K largest, K frequent, stream, median</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Top K largest (min-heap size K):
+  [3,2,1,5,6,4], K=2
+  heap:[3,2]→[3,5]→[5,6] → ans=5
+  
+  Median (two heaps):
+  maxHeap [1,2,3] | minHeap [4,5,6]
+  median = avg(maxHeap.top, minHeap.top)</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>Heap.java</span><span>O(n log k) · O(k)</span></div>
+          <div class="code-body"><span class="cm">// Kth largest → min-heap of size k</span>
+<span class="tp">PriorityQueue</span>&lt;<span class="tp">Integer</span>&gt; <span class="st">pq</span> =
+    <span class="kw">new</span> <span class="fn">PriorityQueue</span>&lt;&gt;(); <span class="cm">// min-heap</span>
+<span class="kw">for</span> (<span class="kw">int</span> <span class="st">n</span>: nums) {
+    <span class="st">pq</span>.<span class="fn">offer</span>(<span class="st">n</span>);
+    <span class="kw">if</span> (<span class="st">pq</span>.<span class="fn">size</span>() > k) <span class="st">pq</span>.<span class="fn">poll</span>();
+}
+<span class="kw">return</span> <span class="st">pq</span>.<span class="fn">peek</span>(); <span class="cm">// kth largest</span>
+<span class="cm">// Max heap: (a,b) -&gt; b-a</span>
+<span class="tp">PriorityQueue</span>&lt;<span class="tp">Integer</span>&gt; <span class="st">maxPQ</span> =
+    <span class="kw">new</span> <span class="fn">PriorityQueue</span>&lt;&gt;((<span class="st">a</span>,<span class="st">b</span>)->b-a);</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n log k)</span><span class="cbadge space">Space: O(k)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ GRAPH ════ -->
+<div class="pattern-section" id="sec-graph" data-pattern="Graph – BFS/DFS">
+  <div class="section-header" style="background:rgba(108,92,231,0.08); border-color:rgba(108,92,231,0.3);">
+    <div class="section-dot" style="background:#6C5CE7;"></div>
+    <span class="section-title">Graph – BFS / DFS</span>
+    <span class="section-count">9 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#6C5CE7;border-color:#6C5CE740;">connected components</span>
+      <span class="kpill" style="color:#6C5CE7;border-color:#6C5CE740;">visited set</span>
+      <span class="kpill" style="color:#6C5CE7;border-color:#6C5CE740;">shortest path</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Medium" data-pattern="Graph – BFS/DFS"><td class="lc-num">200</td><td class="q-name"><a href="https://leetcode.com/problems/number-of-islands/" target="_blank">Number of Islands</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Graph – BFS/DFS"><td class="lc-num">130</td><td class="q-name"><a href="https://leetcode.com/problems/surrounded-regions/" target="_blank">Surrounded Regions</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Graph – BFS/DFS"><td class="lc-num">133</td><td class="q-name"><a href="https://leetcode.com/problems/clone-graph/" target="_blank">Clone Graph</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Graph – BFS/DFS"><td class="lc-num">207</td><td class="q-name"><a href="https://leetcode.com/problems/course-schedule/" target="_blank">Course Schedule</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Graph – BFS/DFS"><td class="lc-num">547</td><td class="q-name"><a href="https://leetcode.com/problems/number-of-provinces/" target="_blank">Number of Provinces</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Graph – BFS/DFS"><td class="lc-num">399</td><td class="q-name"><a href="https://leetcode.com/problems/evaluate-division/" target="_blank">Evaluate Division</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Graph – BFS/DFS"><td class="lc-num">909</td><td class="q-name"><a href="https://leetcode.com/problems/snakes-and-ladders/" target="_blank">Snakes and Ladders</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Graph – BFS/DFS"><td class="lc-num">433</td><td class="q-name"><a href="https://leetcode.com/problems/minimum-genetic-mutation/" target="_blank">Minimum Genetic Mutation</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Graph – BFS/DFS"><td class="lc-num">127</td><td class="q-name"><a href="https://leetcode.com/problems/word-ladder/" target="_blank">Word Ladder</a></td><td><span class="diff Hard">Hard</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Nodes & edges</strong> — count islands, provinces, components</li>
+          <li><strong>Shortest transformation</strong> — BFS (unweighted)</li>
+          <li><strong>Cycle detection</strong> — DFS with color states</li>
+          <li>Keywords: <strong>grid, connected, island, shortest, transform, adjacency</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Grid DFS (islands):
+  1 1 0 0 0
+  1 1 0 0 1   ← each '1' cluster = island
+  0 0 0 1 1
+
+  BFS Shortest Path:
+  Start → [neighbors at dist 1]
+       → [neighbors at dist 2] → End
+  Use visited set to avoid cycles!</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>Graph.java</span><span>O(V+E) · O(V)</span></div>
+          <div class="code-body"><span class="cm">// DFS grid traversal</span>
+<span class="kw">void</span> <span class="fn">dfs</span>(<span class="kw">int</span>[][] <span class="st">grid</span>, <span class="kw">int</span> <span class="st">r</span>, <span class="kw">int</span> <span class="st">c</span>) {
+    <span class="kw">if</span> (<span class="st">r</span>&lt;<span class="nu">0</span>||<span class="st">r</span>&gt;=<span class="st">R</span>||<span class="st">c</span>&lt;<span class="nu">0</span>||<span class="st">c</span>&gt;=<span class="st">C</span>) <span class="kw">return</span>;
+    <span class="kw">if</span> (<span class="st">grid</span>[<span class="st">r</span>][<span class="st">c</span>] != <span class="st">'1'</span>) <span class="kw">return</span>;
+    <span class="st">grid</span>[<span class="st">r</span>][<span class="st">c</span>] = <span class="st">'0'</span>; <span class="cm">// mark visited</span>
+    <span class="kw">int</span>[][] <span class="st">dirs</span> = {{<span class="nu">0</span>,<span class="nu">1</span>},{<span class="nu">0</span>,-<span class="nu">1</span>},{<span class="nu">1</span>,<span class="nu">0</span>},{-<span class="nu">1</span>,<span class="nu">0</span>}};
+    <span class="kw">for</span> (<span class="kw">int</span>[] <span class="st">d</span>: <span class="st">dirs</span>) <span class="fn">dfs</span>(<span class="st">grid</span>,<span class="st">r</span>+<span class="st">d</span>[<span class="nu">0</span>],<span class="st">c</span>+<span class="st">d</span>[<span class="nu">1</span>]);
+}
+<span class="cm">// Cycle: 0=unvisited, 1=visiting, 2=done</span></div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(V+E)</span><span class="cbadge space">Space: O(V)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ INTERVALS ════ -->
+<div class="pattern-section" id="sec-int" data-pattern="Intervals">
+  <div class="section-header" style="background:rgba(0,206,201,0.08); border-color:rgba(0,206,201,0.3);">
+    <div class="section-dot" style="background:#00CEC9;"></div>
+    <span class="section-title">Intervals</span>
+    <span class="section-count">5 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#00CEC9;border-color:#00CEC940;">merge overlapping</span>
+      <span class="kpill" style="color:#00CEC9;border-color:#00CEC940;">sort by start</span>
+      <span class="kpill" style="color:#00CEC9;border-color:#00CEC940;">insert/delete</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Medium" data-pattern="Intervals"><td class="lc-num">57</td><td class="q-name"><a href="https://leetcode.com/problems/insert-interval/" target="_blank">Insert Interval</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Intervals"><td class="lc-num">56</td><td class="q-name"><a href="https://leetcode.com/problems/merge-intervals/" target="_blank">Merge Intervals</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Intervals"><td class="lc-num">435</td><td class="q-name"><a href="https://leetcode.com/problems/non-overlapping-intervals/" target="_blank">Non-overlapping Intervals</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Intervals"><td class="lc-num">452</td><td class="q-name"><a href="https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/" target="_blank">Min Arrows to Burst Balloons</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Easy" data-pattern="Intervals"><td class="lc-num">228</td><td class="q-name"><a href="https://leetcode.com/problems/summary-ranges/" target="_blank">Summary Ranges</a></td><td><span class="diff Easy">Easy</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li>Deal with <strong>[start, end] ranges</strong> that may overlap</li>
+          <li><strong>Sort by start</strong> time, then greedily merge</li>
+          <li>Two intervals overlap if: <strong>a.end >= b.start</strong></li>
+          <li>Keywords: <strong>overlap, merge, schedule, interval, range</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Before: [1,3][2,6][8,10][15,18]
+  Sort:   [1,3][2,6][8,10][15,18]
+  
+  [1,3] + [2,6] → overlap! → [1,6]
+  [1,6] + [8,10] → no overlap → keep
+  After: [1,6][8,10][15,18]
+  
+  Overlap check: prev.end >= cur.start</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>Intervals.java</span><span>O(n log n) · O(n)</span></div>
+          <div class="code-body"><span class="tp">Arrays</span>.<span class="fn">sort</span>(<span class="st">intervals</span>, (<span class="st">a</span>,<span class="st">b</span>)->a[<span class="nu">0</span>]-b[<span class="nu">0</span>]);
+<span class="tp">List</span>&lt;<span class="kw">int</span>[]&gt; <span class="st">res</span>=<span class="kw">new</span> <span class="fn">ArrayList</span>&lt;&gt;();
+<span class="kw">int</span>[] <span class="st">cur</span> = <span class="st">intervals</span>[<span class="nu">0</span>];
+<span class="kw">for</span> (<span class="kw">int</span>[] <span class="st">iv</span>: <span class="st">intervals</span>) {
+    <span class="kw">if</span> (<span class="st">iv</span>[<span class="nu">0</span>] &lt;= <span class="st">cur</span>[<span class="nu">1</span>]) { <span class="cm">// overlap</span>
+        <span class="st">cur</span>[<span class="nu">1</span>] = <span class="tp">Math</span>.<span class="fn">max</span>(<span class="st">cur</span>[<span class="nu">1</span>], <span class="st">iv</span>[<span class="nu">1</span>]);
+    } <span class="kw">else</span> {
+        <span class="st">res</span>.<span class="fn">add</span>(<span class="st">cur</span>);
+        <span class="st">cur</span> = <span class="st">iv</span>;
+    }
+}
+<span class="st">res</span>.<span class="fn">add</span>(<span class="st">cur</span>);</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Time: O(n log n)</span><span class="cbadge space">Space: O(n)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TRIE ════ -->
+<div class="pattern-section" id="sec-trie" data-pattern="Trie">
+  <div class="section-header" style="background:rgba(129,236,236,0.08); border-color:rgba(129,236,236,0.3);">
+    <div class="section-dot" style="background:#81ECEC;"></div>
+    <span class="section-title">Trie (Prefix Tree)</span>
+    <span class="section-count">3 problems</span>
+    <div class="keyword-pills">
+      <span class="kpill" style="color:#81ECEC;border-color:#81ECEC40;">prefix search</span>
+      <span class="kpill" style="color:#81ECEC;border-color:#81ECEC40;">word dictionary</span>
+      <span class="kpill" style="color:#81ECEC;border-color:#81ECEC40;">autocomplete</span>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="qs-panel"><table class="qs-table"><thead><tr><th>#</th><th>Problem</th><th>Diff</th></tr></thead><tbody>
+      <tr class="q-row" data-diff="Medium" data-pattern="Trie"><td class="lc-num">208</td><td class="q-name"><a href="https://leetcode.com/problems/implement-trie-prefix-tree/" target="_blank">Implement Trie (Prefix Tree)</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Medium" data-pattern="Trie"><td class="lc-num">211</td><td class="q-name"><a href="https://leetcode.com/problems/design-add-and-search-words-data-structure/" target="_blank">Design Add and Search Words</a></td><td><span class="diff Medium">Medium</span></td></tr>
+      <tr class="q-row" data-diff="Hard" data-pattern="Trie"><td class="lc-num">212</td><td class="q-name"><a href="https://leetcode.com/problems/word-search-ii/" target="_blank">Word Search II</a></td><td><span class="diff Hard">Hard</span></td></tr>
+    </tbody></table></div>
+    <div class="cheat-panel">
+      <div>
+        <div class="cheat-block-title">🎯 Recognize When…</div>
+        <div class="recognize-box"><ul>
+          <li><strong>Prefix/autocomplete</strong> queries on many strings</li>
+          <li><strong>Word dictionary</strong> with search/insert</li>
+          <li><strong>Wildcard matching</strong> ('.' matches any char)</li>
+          <li>Keywords: <strong>prefix, starts with, dictionary, autocomplete, word search</strong></li>
+        </ul></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">📊 Visual</div>
+        <div class="visual-box"><pre>
+  Insert: "apple", "app", "bat"
+  
+  root
+  ├─ a ─ p ─ p ─ l ─ e*
+  │            └*
+  └─ b ─ a ─ t*
+  
+  * = isEnd=true
+  Each node: children[26], isEnd</pre></div>
+      </div>
+      <div>
+        <div class="cheat-block-title">☕ Java Template</div>
+        <div class="code-block">
+          <div class="code-header"><span>Trie.java</span><span>O(L) per op · O(N·L)</span></div>
+          <div class="code-body"><span class="kw">class</span> <span class="tp">TrieNode</span> {
+    <span class="tp">TrieNode</span>[] <span class="st">ch</span> = <span class="kw">new</span> <span class="tp">TrieNode</span>[<span class="nu">26</span>];
+    <span class="kw">boolean</span> <span class="st">end</span>;
+}
+<span class="tp">TrieNode</span> <span class="st">root</span> = <span class="kw">new</span> <span class="tp">TrieNode</span>();
+
+<span class="kw">void</span> <span class="fn">insert</span>(<span class="tp">String</span> <span class="st">w</span>) {
+    <span class="tp">TrieNode</span> <span class="st">cur</span>=<span class="st">root</span>;
+    <span class="kw">for</span>(<span class="kw">char</span> <span class="st">c</span>:<span class="st">w</span>.<span class="fn">toCharArray</span>()){
+        <span class="kw">int</span> <span class="st">i</span>=<span class="st">c</span>-<span class="st">'a'</span>;
+        <span class="kw">if</span>(<span class="st">cur</span>.<span class="st">ch</span>[<span class="st">i</span>]==<span class="kw">null</span>) <span class="st">cur</span>.<span class="st">ch</span>[<span class="st">i</span>]=<span class="kw">new</span> <span class="tp">TrieNode</span>();
+        <span class="st">cur</span>=<span class="st">cur</span>.<span class="st">ch</span>[<span class="st">i</span>];
+    }
+    <span class="st">cur</span>.<span class="st">end</span>=<span class="kw">true</span>;
+}</div>
+        </div>
+      </div>
+      <div><div class="complexity"><span class="cbadge time">Op: O(L)</span><span class="cbadge space">Space: O(N·L)</span></div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+let diffFilter = 'All';
+
+function filterDiff(diff, btn) {
+  diffFilter = diff;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterAll();
+}
+
+function filterAll() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.pattern-section').forEach(sec => {
+    let anyVisible = false;
+    sec.querySelectorAll('.q-row').forEach(row => {
+      const title = row.querySelector('.q-name').textContent.toLowerCase();
+      const diff = row.dataset.diff;
+      const lcNum = row.querySelector('.lc-num').textContent;
+      const matchSearch = !q || title.includes(q) || lcNum.includes(q);
+      const matchDiff = diffFilter === 'All' || diff === diffFilter;
+      if (matchSearch && matchDiff) {
+        row.classList.remove('hidden');
+        anyVisible = true;
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+    sec.classList.toggle('hidden', !anyVisible);
+  });
+}
+
+// Build TOC
+const toc = document.getElementById('toc');
+const sections = [
+  {id:'sec-tp', color:'#FF6B6B', label:'Two Pointers'},
+  {id:'sec-sw', color:'#FF9F43', label:'Sliding Window'},
+  {id:'sec-ps', color:'#F9CA24', label:'Prefix Sum'},
+  {id:'sec-ka', color:'#48DBFB', label:"Kadane's"},
+  {id:'sec-bs', color:'#54A0FF', label:'Binary Search'},
+  {id:'sec-st', color:'#FD9644', label:'Stack/Queue'},
+  {id:'sec-ll', color:'#74B9FF', label:'Linked List'},
+  {id:'sec-bfs', color:'#55EFC4', label:'Tree BFS'},
+  {id:'sec-dfs', color:'#00B894', label:'Tree DFS'},
+  {id:'sec-bt', color:'#E17055', label:'Backtracking'},
+  {id:'sec-dp1', color:'#00CEC9', label:'DP 1D'},
+  {id:'sec-dp2', color:'#2ECC71', label:'DP 2D'},
+  {id:'sec-heap', color:'#F39C12', label:'Heap'},
+  {id:'sec-graph', color:'#6C5CE7', label:'Graph'},
+  {id:'sec-int', color:'#16A085', label:'Intervals'},
+  {id:'sec-trie', color:'#81ECEC', label:'Trie'},
+];
+sections.forEach(s => {
+  const a = document.createElement('a');
+  a.className = 'toc-link';
+  a.href = '#'+s.id;
+  a.innerHTML = `<span class="toc-dot" style="background:${s.color}"></span>${s.label}`;
+  toc.appendChild(a);
+});
+</script>
+</body>
+</html>
